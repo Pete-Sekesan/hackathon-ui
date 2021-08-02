@@ -4,6 +4,7 @@ import Navbar from "./components/nav/Navbar";
 import Landing from "./components/landing-page/Landing";
 import Login from "./components/login/Login";
 import SignUp from "./components/signup/Signup";
+import Dashboard from "./components/dashboard/Dashboard";
 
 
 
@@ -14,6 +15,7 @@ function App() {
       <Route path="/" exact component={Landing} />
       <Route path="/login" component={Login} />
       <Route path="/signup" component={SignUp} />
+      <Route path="/dashboard" component={Dashboard} />
    
  
     </div>
