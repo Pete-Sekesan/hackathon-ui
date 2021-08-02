@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import AuthAPIService from '../../services/auth-api-service';
 import Spinner from '../../components/Spinner/Spinner'
+import Button from '@material-ui/core/Button';
 
 
 function Upload(props) {
@@ -11,7 +12,6 @@ function Upload(props) {
   const { setImgUrl, setPreviewSource, setShowForm } = props;
 
   const handleFileInputChange = (e) => {
-    setShowButton(false)
     const file = e.target.files[0];
     previewFile(file);
     uploadPhotos(e);
@@ -111,9 +111,10 @@ function Upload(props) {
         ) : null}
         {showButton ? (
           <div className="submit-button">
-           <h4>Upload Successful!</h4>
+                      <h4>Please confirm profile image</h4>
+                   <button type='submit'>Confirm Image</button>
           </div>
-        ) : null}
+        ) : <h4>Upload a profile image</h4>}
       </form>
     </div>
   );

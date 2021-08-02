@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -15,6 +15,7 @@ import Container from '@material-ui/core/Container';
 import TokenService from "../../services/token-service";
 import AuthApiService from "../../services/auth-api-service";
 import Spinner from "../Spinner/Spinner";
+import AppContext from "../../AppContext";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -40,6 +41,11 @@ export default function SignIn(props) {
   const classes = useStyles();
   const [error, setError] = useState(null);
   const [loggedInState, setLoggedInState] = useState(null);
+  const {
+    setUserId,
+    setUsername,
+    setUserUrl,
+  } = useContext(AppContext);
 
     const handleLogin = (e) => {
     e.preventDefault();
@@ -51,6 +57,13 @@ export default function SignIn(props) {
       .then((loginResponse) => {
         // store auth token in local storage
         TokenService.saveAuthToken(loginResponse.authToken);
+        const jwt = TokenService.readJwtToken(loginResponse);
+        setUserId(jwt.user_id);
+        setUsername(jwt.username);
+        setUserUrl(jwt.user_url);
+        TokenService.saveUserURL(jwt.user_url);
+        TokenService.saveUserName(jwt.username);
+        TokenService.saveUserId(jwt.user_id);
         props.history.push("/dashboard");
       })
       .catch((res) => {
