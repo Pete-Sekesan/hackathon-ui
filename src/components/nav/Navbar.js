@@ -1,28 +1,41 @@
-import React, { Component, Fragment } from "react";
+import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+
 import { Link } from "react-router-dom";
 
+const useStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
+  },
+  menuButton: {
+    marginRight: theme.spacing(2),
+  },
+  title: {
+    flexGrow: 1,
+  },
+ 
+}));
 
-function Navbar() {
-    return (
-    
-          <nav className="navbar navbar-expand-lg navbar-light fixed-top">
-        <div className="container">
+
+export default function Navbar() {
+  const classes = useStyles();
+
+  return (
+    <div className={classes.root}>
+      <AppBar position="static">
+        <Toolbar>
           
-          <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
-            <ul className="navbar-nav ml-auto">
-              <li className="nav-item">
-                <Link className="nav-link" to={"/login"}>Login</Link>
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link" to={"/signup"}>Sign up</Link>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
-           
-      
-     )}
-
-
-export default Navbar
+          <Typography variant="h6" className={classes.title}>
+            <Link to="/">Home</Link>
+          </Typography>
+          <Button color="inherit" component={Link} to={'/login'}>Login</Button>
+          <Button color="inherit" component={Link} to={'/signup'}>Signup</Button>
+        </Toolbar>
+      </AppBar>
+    </div>
+  );
+}
