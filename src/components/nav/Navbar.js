@@ -4,6 +4,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import "./Navbar.css";
 
 import { Link } from "react-router-dom";
 
@@ -17,6 +18,9 @@ const useStyles = makeStyles((theme) => ({
   title: {
     flexGrow: 1,
   },
+  body: {
+    backgroundColor:"#000000",
+  },
  
 }));
 
@@ -26,7 +30,7 @@ export default function Navbar() {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static">
+      <AppBar position="static" className="nav">
         <Toolbar>
           
           <Typography variant="h6" className={classes.title}>
