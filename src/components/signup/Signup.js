@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -8,22 +8,14 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
-
+import Upload from '../Upload/Upload';
+import AuthAPIService from '../../services/auth-api-service';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
-        Blackjack Saloon
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
+import Spinner from '../Spinner/Spinner';
+
+
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
@@ -43,8 +35,42 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(3, 0, 2),
   },
 }));
-export default function SignIn() {
+
+export default function SignIn(props) {
+
+  const [imgUrl, setImgUrl] = useState("");
+  const [previewSource, setPreviewSource] = useState("");
+  const [loggedInState, setLoggedInState] = useState(null);
+  const [error, setError] = useState(null);
+
   const classes = useStyles();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const {
+      username,
+      password,
+    } = e.target;
+    setLoggedInState(true);
+    setError(null);
+    // create user
+    AuthAPIService.postUser({
+      username: username.value,
+      password: password.value,
+      user_url: imgUrl,
+    })
+      .then(() => {
+        props.history.push("/login");
+      })
+      .catch((res) => {
+        setError(res.error);
+        setLoggedInState(null);
+      });
+  };
+
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -53,7 +79,8 @@ export default function SignIn() {
         <Typography component="h1" variant="h5">
           Sign Up
         </Typography>
-        <form className={classes.form} noValidate>
+        {loggedInState && <Spinner />}
+        <form className={classes.form} noValidate onSubmit={handleSubmit}>
           <TextField
             variant="outlined"
             margin="normal"
@@ -62,6 +89,8 @@ export default function SignIn() {
             id="username"
             label="Username"
             name="username"
+                      value={username}
+                      onChange={e =>setUsername(e.target.value)}
             autoComplete="username"
             autoFocus
           />
@@ -72,23 +101,16 @@ export default function SignIn() {
             fullWidth
             name="password"
             label="Password"
+            value={password}
             type="password"
-            id="password"
+                      id="password"
+                      onChange={e =>setPassword(e.target.value)}
             autoComplete="current-password"
                   />
-                  
-                  <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Confirm Password"
-            type="confirm-password"
-            id="confirm-password"
-            autoComplete="current-password"
-          />
-        
+                
+          <Upload  setImgUrl={setImgUrl}
+            previewSource={previewSource}
+            setPreviewSource={setPreviewSource} />
           <Button
             type="submit"
             fullWidth
@@ -98,11 +120,11 @@ export default function SignIn() {
           >
             Sign Up
           </Button>
-          
+           {error !== null && <p>{error}</p>}
         </form>
       </div>
       <Box mt={8}>
-        <Copyright />
+     
       </Box>
     </Container>
   );

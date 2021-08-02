@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -12,18 +12,11 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
-        Blackjack Saloon
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
+import TokenService from "../../services/token-service";
+import AuthApiService from "../../services/auth-api-service";
+import Spinner from "../Spinner/Spinner";
+
+
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
@@ -43,8 +36,29 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(3, 0, 2),
   },
 }));
-export default function SignIn() {
+export default function SignIn(props) {
   const classes = useStyles();
+  const [error, setError] = useState(null);
+  const [loggedInState, setLoggedInState] = useState(null);
+
+    const handleLogin = (e) => {
+    e.preventDefault();
+    setLoggedInState(true);
+    const { username, password } = e.target;
+    const user = { username: username.value, password: password.value };
+    setError(null);
+    AuthApiService.loginUser(user)
+      .then((loginResponse) => {
+        // store auth token in local storage
+        TokenService.saveAuthToken(loginResponse.authToken);
+        props.history.push("/dashboard");
+      })
+      .catch((res) => {
+        setError(res.error);
+        setLoggedInState(null);
+      });
+  };
+
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -53,7 +67,9 @@ export default function SignIn() {
         <Typography component="h1" variant="h5">
           Log In
         </Typography>
-        <form className={classes.form} noValidate>
+        {loggedInState && <Spinner />}
+        {error !== null && <h3 className="error-message">{error}</h3>}
+        <form className={classes.form} noValidate onSubmit={handleLogin}>
           <TextField
             variant="outlined"
             margin="normal"
@@ -93,7 +109,7 @@ export default function SignIn() {
         </form>
       </div>
       <Box mt={8}>
-        <Copyright />
+        
       </Box>
     </Container>
   );

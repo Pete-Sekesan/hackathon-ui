@@ -15,7 +15,7 @@ function App() {
       <Route path="/login" component={Login} />
       <Route path="/signup" component={SignUp} />
    
-    <h1> Hackathon UI</h1>
+ 
     </div>
   );
 }
