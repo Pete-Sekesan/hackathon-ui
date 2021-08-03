@@ -178,6 +178,20 @@ const AuthAPIService = {
       !res.ok ? res.json().then((e) => Promise.reject(e)) : res.json()
     );
   },
+  dealCards(cards) {
+    return fetch(
+      "https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1",
+      {
+        method: "GET",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify(cards),
+      }
+    ).then((res) =>
+      !res.ok ? res.json().then((e) => Promise.reject(e)) : res.json()
+    );
+  },
 };
 
 export default AuthAPIService;

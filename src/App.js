@@ -7,6 +7,7 @@ import SignUp from "./components/signup/Signup";
 import Dashboard from "./components/dashboard/Dashboard";
 import AppContext from "./AppContext";
 import TokenService from "./services/token-service";
+import CardTable from "./components/CardTable/CardTable";
 
 function App() {
   const [userId, setUserId] = useState(TokenService.hasUserId());
@@ -32,6 +33,7 @@ function App() {
         <Route path="/login" component={Login} />
         <Route path="/signup" component={SignUp} />
         <Route path="/dashboard" component={Dashboard} />
+        <Route path="/cardtable" component={CardTable} />
       </AppContext.Provider>
     </div>
   );
