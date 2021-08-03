@@ -5,9 +5,12 @@ function CardTable(props) {
   const [deal, setDeal] = useState([]);
   const [deckId, setDeckId] = useState("");
   const [deckAmount, setDeckAmount] = useState("");
+  const [cards, setCards] = useState({});
+  const [playerCard, setPlayerCard] = useState({});
+  const [dealerCard, setDealerCard] = useState({});
 
   const shuffleCards = () => {
-    AuthAPIService.dealCards()
+    AuthAPIService.shuffleCards()
       .then((deck) => {
         console.log(deck.deck_id);
         setDeckId(deck.deck_id);
@@ -20,10 +23,12 @@ function CardTable(props) {
   };
 
   const dealCards = () => {
-    AuthAPIService.dealCards()
-      .then((deck) => {
-        console.log(deck.deck_id);
-        setDeckId(deck.deck_id);
+    AuthAPIService.dealCards(deckId)
+      .then((hand) => {
+        console.log(hand);
+        console.log(hand.cards[0]);
+        setPlayerCard(hand.cards[0]);
+        setDealerCard(hand.cards[1]);
       })
       .catch((err) => {
         console.log(err);
