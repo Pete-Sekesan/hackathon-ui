@@ -1,11 +1,10 @@
 import React, { useState } from "react";
-import AuthAPIService from '../../services/auth-api-service';
-import Spinner from '../../components/Spinner/Spinner'
-import Button from '@material-ui/core/Button';
-
+import AuthAPIService from "../../services/auth-api-service";
+import Spinner from "../../components/Spinner/Spinner";
+import Button from "@material-ui/core/Button";
 
 function Upload(props) {
-  const [uploadError, setUploadError] = useState("");
+  const [uploadError, setUploadError] = useState(null);
   const [showButton, setShowButton] = useState(false);
   const [resizeUrl, setResizeUrl] = useState("");
   const [loggedInState, setLoggedInState] = useState(null);
@@ -37,12 +36,11 @@ function Upload(props) {
       .then((img) => {
         setImgUrl(img.public_id);
         setLoggedInState(null);
-        setShowForm(true);
         setShowButton(false);
         setUploadError("");
       })
       .catch((res) => {
-        setUploadError("Something went wrong, try again");
+        setUploadError(res);
         setLoggedInState(null);
       });
   };
@@ -89,6 +87,7 @@ function Upload(props) {
   return (
     <div className="App">
       {loggedInState && <Spinner />}
+      <h3>Profile Image</h3>
       <form onSubmit={handleSubmitFile}>
         <input
           type="file"
@@ -105,16 +104,14 @@ function Upload(props) {
           )}
         </div>
         {uploadError ? (
-          <h3 className="error-message">
-            {"Error uploading file, try smaller image"}
-          </h3>
+          <h3 className="error-message">{uploadError.message}</h3>
         ) : null}
         {showButton ? (
           <div className="submit-button">
-                      <h4>Please confirm profile image</h4>
-                   <button type='submit'>Confirm Image</button>
+            <h4>Please confirm profile image</h4>
+            <button type="submit">Confirm Image</button>
           </div>
-        ) : <h4>Upload a profile image</h4>}
+        ) : null}
       </form>
     </div>
   );
