@@ -1,4 +1,3 @@
-
 import config from "../config";
 import TokenService from "./token-service";
 
@@ -138,6 +137,43 @@ const AuthAPIService = {
       headers: {
         "Content-type": "application/json",
       },
+    }).then((res) =>
+      !res.ok ? res.json().then((e) => Promise.reject(e)) : res.json()
+    );
+  },
+  getMyWallet(wallet) {
+    const token = "bearer " + TokenService.hasAuthToken();
+    return fetch(`${config.API_ENDPOINT}/api/wallet`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token,
+      },
+      body: JSON.stringify(wallet),
+    }).then((res) =>
+      !res.ok ? res.json().then((e) => Promise.reject(e)) : res.json()
+    );
+  },
+  postWallet(wallet) {
+    const token = "bearer " + TokenService.hasAuthToken();
+    return fetch(`${config.API_ENDPOINT}/api/wallet`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token,
+      },
+      body: JSON.stringify(wallet),
+    }).then((res) =>
+      !res.ok ? res.json().then((e) => Promise.reject(e)) : res.json()
+    );
+  },
+  getWallets(wallet) {
+    return fetch(`${config.API_ENDPOINT}/api/wallet`, {
+      method: "GET",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify(wallet),
     }).then((res) =>
       !res.ok ? res.json().then((e) => Promise.reject(e)) : res.json()
     );

@@ -1,29 +1,28 @@
-import React, {useState} from 'react'
-import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
-import Box from '@material-ui/core/Box';
-import Upload from '../Upload/Upload';
-import AuthAPIService from '../../services/auth-api-service';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-import Spinner from '../Spinner/Spinner';
-
+import React, { useState } from "react";
+import Button from "@material-ui/core/Button";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import TextField from "@material-ui/core/TextField";
+import Box from "@material-ui/core/Box";
+import Upload from "../Upload/Upload";
+import AuthAPIService from "../../services/auth-api-service";
+import Typography from "@material-ui/core/Typography";
+import { makeStyles } from "@material-ui/core/styles";
+import Container from "@material-ui/core/Container";
+import Spinner from "../Spinner/Spinner";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
   },
   avatar: {
     margin: theme.spacing(1),
     backgroundColor: theme.palette.secondary.main,
   },
   form: {
-    width: '100%', // Fix IE 11 issue.
+    width: "100%", // Fix IE 11 issue.
     marginTop: theme.spacing(1),
   },
   submit: {
@@ -32,7 +31,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function SignIn(props) {
-
   const [imgUrl, setImgUrl] = useState("");
   const [previewSource, setPreviewSource] = useState("");
   const [loggedInState, setLoggedInState] = useState(null);
@@ -42,10 +40,7 @@ export default function SignIn(props) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const {
-      username,
-      password,
-    } = e.target;
+    const { username, password } = e.target;
     setLoggedInState(true);
     setError(null);
     // create user
@@ -63,18 +58,22 @@ export default function SignIn(props) {
       });
   };
 
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
-      
         <Typography component="h1" variant="h5">
           Sign Up
         </Typography>
         {loggedInState && <Spinner />}
+        <Upload
+          setImgUrl={setImgUrl}
+          previewSource={previewSource}
+          setPreviewSource={setPreviewSource}
+        />
         <form className={classes.form} noValidate onSubmit={handleSubmit}>
           <TextField
             variant="outlined"
@@ -84,8 +83,8 @@ export default function SignIn(props) {
             id="username"
             label="Username"
             name="username"
-                      value={username}
-                      onChange={e =>setUsername(e.target.value)}
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
             autoComplete="username"
             autoFocus
           />
@@ -98,14 +97,11 @@ export default function SignIn(props) {
             label="Password"
             value={password}
             type="password"
-                      id="password"
-                      onChange={e =>setPassword(e.target.value)}
+            id="password"
+            onChange={(e) => setPassword(e.target.value)}
             autoComplete="current-password"
-                  />
-                
-          <Upload  setImgUrl={setImgUrl}
-            previewSource={previewSource}
-            setPreviewSource={setPreviewSource} />
+          />
+
           <Button
             type="submit"
             fullWidth
@@ -115,12 +111,10 @@ export default function SignIn(props) {
           >
             Sign Up
           </Button>
-           {error !== null && <p>{error}</p>}
+          {error !== null && <p>{error}</p>}
         </form>
       </div>
-      <Box mt={8}>
-     
-      </Box>
+      <Box mt={8}></Box>
     </Container>
   );
 }
