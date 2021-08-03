@@ -6,6 +6,7 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import TokenService from "../../services/token-service";
 import AppContext from "../../AppContext";
+import Logo from "../../assets/logo.png";
 import "./Navbar.css";
 
 import { Link } from "react-router-dom";
@@ -40,7 +41,11 @@ export default function Navbar(props) {
       <AppBar position="static" className="nav">
         <Toolbar>
           <Typography variant="h6" className={classes.title}>
-            <Link to="/">Home</Link>
+            <div className="nav-logo">
+            <Link to="/">
+              <img src={Logo} alt="logo"/>
+              </Link>
+              </div>
           </Typography>
           <Button color="inherit" component={Link} to={"/login"}>
             Login
