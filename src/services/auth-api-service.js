@@ -178,7 +178,7 @@ const AuthAPIService = {
       !res.ok ? res.json().then((e) => Promise.reject(e)) : res.json()
     );
   },
-  dealCards(cards) {
+  shuffleCards() {
     return fetch(
       "https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1",
       {
@@ -186,7 +186,19 @@ const AuthAPIService = {
         headers: {
           "Content-type": "application/json",
         },
-        body: JSON.stringify(cards),
+      }
+    ).then((res) =>
+      !res.ok ? res.json().then((e) => Promise.reject(e)) : res.json()
+    );
+  },
+  dealCards(deckId) {
+    return fetch(
+      `https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=2`,
+      {
+        method: "GET",
+        headers: {
+          "Content-type": "application/json",
+        },
       }
     ).then((res) =>
       !res.ok ? res.json().then((e) => Promise.reject(e)) : res.json()
