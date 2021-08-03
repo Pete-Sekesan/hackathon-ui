@@ -12,6 +12,8 @@ function CardTable(props) {
   const [bank, playerBank] = useState(500);
   const [bet, setBet] = useState(0);
   const [placeBet, setPlaceBet] = useState(false);
+  const [dealShow, setDealShow] = useState(false);
+  const [revealShow, setRevealShow] = useState(false);
 
   const shuffleCards = () => {
     AuthAPIService.shuffleCards()
@@ -21,7 +23,9 @@ function CardTable(props) {
         setDeckAmount(deck.remaining);
         setPlayerCard(null);
         setDealerCard(null);
-        setBet("");
+        setPlaceBet(true);
+        setDealShow(true);
+        setBet(0);
         console.log(deck);
       })
       .catch((err) => {
@@ -36,6 +40,8 @@ function CardTable(props) {
         console.log(hand.cards[0]);
         setPlayerCard(hand.cards[0]);
         setDealerCard(hand.cards[1]);
+        setDealShow(false);
+        setRevealShow(false);
       })
       .catch((err) => {
         console.log(err);
@@ -52,20 +58,17 @@ function CardTable(props) {
     setBet(bet + 100);
   };
 
+  const clearBet = () => {
+    setBet(0);
+  };
+
+  const placeBets = () => {
+    setPlaceBet(false);
+    setRevealShow(true);
+  };
+
   return (
     <div>
-      <button onClick={shuffleCards}>Deal Cards</button>
-      <button>Place Bet</button>
-      {placeBet === false ? (
-        <>
-          <button onClick={betTen}>$10</button>
-          <button onClick={betFifty}>$50</button>
-          <button onClick={betHundred}>$100</button>
-        </>
-      ) : (
-        <button onClick={dealCards}>Reveal Cards</button>
-      )}
-
       {playerCard !== null ? (
         <img src={playerCard.image} width="200" heigh="400" />
       ) : (
@@ -75,6 +78,7 @@ function CardTable(props) {
           heigh="400"
         />
       )}
+      <br />
       {dealerCard !== null ? (
         <img src={dealerCard.image} width="200" heigh="400" />
       ) : (
@@ -84,10 +88,47 @@ function CardTable(props) {
           heigh="400"
         />
       )}
-      {bet === 0 ? <p>Current Bet: $0</p> : <p>Current Bet: ${bet}</p>}
-      <p>Current Bet Test: ${bet}</p>
+      <br />
+      {dealShow === false ? (
+        <button onClick={shuffleCards}>Deal Cards</button>
+      ) : null}
+      {revealShow === false ? null : (
+        <button onClick={dealCards}>Reveal Cards</button>
+      )}
+      <br />
+      {placeBet === false ? null : (
+        <>
+          <button onClick={placeBets}>Place Bet</button>
+          <button onClick={clearBet}>Clear Bet</button>
+          <br />
+          <img
+            src="https://cdn.shopify.com/s/files/1/0098/5160/0947/products/semicustomhighroller_1024x1024@2x.png?v=1582673667"
+            width="100"
+            heigh="100"
+            onClick={betTen}
+          />
+          <p>Bet $10</p>
+          <img
+            src="https://cdn.shopify.com/s/files/1/0098/5160/0947/products/semicustomtropicoasis_1024x1024@2x.png?v=1582761957"
+            width="100"
+            heigh="100"
+            onClick={betFifty}
+          />
+          <p>Bet $50</p>
+          <img
+            src="https://cdn.shopify.com/s/files/1/0098/5160/0947/products/tropicoasis_1024x1024@2x.png?v=1581634067"
+            width="100"
+            heigh="100"
+            onClick={betHundred}
+          />
+          <p>Bet $100</p>
+        </>
+      )}
+      <br />
 
-      {bank}
+      <p>Current Bet: ${bet}</p>
+
+      <p>Current Bank ${bank}</p>
     </div>
   );
 }
