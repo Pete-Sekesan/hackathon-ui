@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React from 'react';
 import "./LeaderBoard.css";
 import testImg from '../../assets/generic-avatar-1.jpeg';
@@ -47,3 +48,12 @@ function LeaderBoard() {
 }
 
 export default LeaderBoard
+=======
+import React from "react";
+
+function LeaderBoard() {
+  return <div></div>;
+}
+
+export default LeaderBoard;
+>>>>>>> 1cde3b953399ede872dac5b8e339e2133fba1125
