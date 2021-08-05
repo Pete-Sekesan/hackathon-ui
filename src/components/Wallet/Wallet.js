@@ -26,7 +26,7 @@ export default function Wallet() {
   useEffect(() => {
     AuthAPIService.getWallets()
       .then((res) => {
-        setWallets(res);
+        setWallets(...wallets, res);
       })
       .catch((err) => {
         console.log(err);
@@ -35,6 +35,7 @@ export default function Wallet() {
 
   const handleRefill = (e) => {
     console.log(wallets);
+    console.log(wallets.filter((wallet) => wallet.username === username));
     console.log(yourWallet);
   };
 
@@ -72,6 +73,7 @@ export default function Wallet() {
           </CardContent>
         </CardActionArea>
       </Card>
+      <button onClick={handleRefill}>Check</button>
     </>
   );
 }

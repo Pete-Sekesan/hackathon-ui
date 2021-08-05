@@ -37,7 +37,9 @@ export default function SignIn(props) {
   const [previewSource, setPreviewSource] = useState("");
   const [loggedInState, setLoggedInState] = useState(null);
   const [error, setError] = useState(null);
-  const { setUserId, setUsername, setUserUrl, userId } = useContext(AppContext);
+  const { setUserId, setUsername, setUserUrl, userId, setWallets } = useContext(
+    AppContext
+  );
 
   const classes = useStyles();
 
@@ -73,8 +75,9 @@ export default function SignIn(props) {
       .then(() => {
         AuthAPIService.postWallet({
           total: 500,
+        }).then((res) => {
+          props.history.push("/dashboard");
         });
-        props.history.push("/dashboard");
       })
       .catch((res) => {
         setError(res.error);
