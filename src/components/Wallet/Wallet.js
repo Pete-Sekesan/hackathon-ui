@@ -17,16 +17,16 @@ const useStyles = makeStyles({
   },
 });
 
-export default function Wallet(props) {
-  const classes = useStyles();
+export default function Wallet() {
   const { username, userUrl, wallets, setWallets, userId } = useContext(
     AppContext
   );
+  const classes = useStyles();
 
   useEffect(() => {
     AuthAPIService.getWallets()
-      .then((wallets) => {
-        setWallets(wallets);
+      .then((res) => {
+        setWallets(res);
       })
       .catch((err) => {
         console.log(err);
@@ -34,20 +34,11 @@ export default function Wallet(props) {
   }, [setWallets]);
 
   const handleRefill = (e) => {
-    AuthAPIService.postWallet({
-      total: 500,
-    })
-      .then((refill) => {
-        setWallets([...wallets, refill]);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    console.log(wallets);
+    console.log(yourWallet);
   };
 
-  const yourWallet = wallets.filter(
-    (wallet) => wallet.user_id === parseInt(userId)
-  );
+  const yourWallet = wallets.filter((wallet) => wallet.username === username);
 
   return (
     <>
@@ -75,20 +66,12 @@ export default function Wallet(props) {
             <Typography gutterBottom variant="h5" component="h2">
               {username}
             </Typography>
+            <Typography gutterBottom variant="h5" component="h2">
+              {yourWallet.total}
+            </Typography>
           </CardContent>
         </CardActionArea>
       </Card>
-      {yourWallet.length > 0 ? (
-        yourWallet.map((total, index) => <div>{total.total}</div>)
-      ) : (
-        <button onClick={handleRefill}>Refill</button>
-      )}
-      {wallets.map((total, index) => {
-        <div>
-          <h3>{total.total}</h3>
-          <p>{total.username}</p>
-        </div>;
-      })}
     </>
   );
 }

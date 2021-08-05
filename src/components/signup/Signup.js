@@ -70,9 +70,7 @@ export default function SignIn(props) {
         });
       })
 
-      .then((res) => {
-        console.log("wallet");
-        console.log(res);
+      .then(() => {
         AuthAPIService.postWallet({
           total: 500,
         });
