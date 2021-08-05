@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
@@ -9,6 +9,8 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Spinner from "../Spinner/Spinner";
+import TokenService from "../../services/token-service";
+import AppContext from "../../AppContext";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -35,12 +37,14 @@ export default function SignIn(props) {
   const [previewSource, setPreviewSource] = useState("");
   const [loggedInState, setLoggedInState] = useState(null);
   const [error, setError] = useState(null);
+  const { setUserId, setUsername, setUserUrl, userId } = useContext(AppContext);
 
   const classes = useStyles();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const { username, password } = e.target;
+    const user = { username: username.value, password: password.value };
     setLoggedInState(true);
     setError(null);
     // create user
@@ -50,16 +54,35 @@ export default function SignIn(props) {
       user_url: imgUrl,
     })
       .then(() => {
-        props.history.push("/login");
+        AuthAPIService.loginUser(user).then((loginResponse) => {
+          // store auth token in local storage[]
+          console.log("login");
+          console.log(loginResponse);
+          TokenService.saveAuthToken(loginResponse.authToken);
+          console.log(loginResponse.authToken);
+          const jwt = TokenService.readJwtToken(loginResponse);
+          setUserId(jwt.user_id);
+          setUsername(jwt.username);
+          setUserUrl(jwt.user_url);
+          TokenService.saveUserURL(jwt.user_url);
+          TokenService.saveUserName(jwt.username);
+          TokenService.saveUserId(jwt.user_id);
+        });
+      })
+
+      .then((res) => {
+        console.log("wallet");
+        console.log(res);
+        AuthAPIService.postWallet({
+          total: 500,
+        });
+        props.history.push("/dashboard");
       })
       .catch((res) => {
         setError(res.error);
         setLoggedInState(null);
       });
   };
-
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
 
   return (
     <Container component="main" maxWidth="xs">
@@ -83,8 +106,6 @@ export default function SignIn(props) {
             id="username"
             label="Username"
             name="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
             autoComplete="username"
             autoFocus
           />
@@ -95,10 +116,8 @@ export default function SignIn(props) {
             fullWidth
             name="password"
             label="Password"
-            value={password}
             type="password"
             id="password"
-            onChange={(e) => setPassword(e.target.value)}
             autoComplete="current-password"
           />
 

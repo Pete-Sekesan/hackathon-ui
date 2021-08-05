@@ -17,7 +17,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default function Wallet() {
+export default function Wallet(props) {
   const classes = useStyles();
   const { username, userUrl, wallets, setWallets, userId } = useContext(
     AppContext
@@ -54,20 +54,22 @@ export default function Wallet() {
       <Card className={classes.root}>
         <CardActionArea>
           <CardMedia>
-            <Image
-              cloudName="hotialrup"
-              publicId={`${userUrl}`}
-              alt={`${username}`}
-            >
-              <Transformation
-                gravity="face"
-                height="300"
-                width="300"
-                crop="crop"
-              />
-              <Transformation radius="max" />
-              <Transformation width="100" crop="scale" />
-            </Image>
+            {userUrl !== null ? (
+              <Image
+                cloudName="hotialrup"
+                publicId={`${userUrl}`}
+                alt={`${username}`}
+              >
+                <Transformation
+                  gravity="face"
+                  height="300"
+                  width="300"
+                  crop="crop"
+                />
+                <Transformation radius="max" />
+                <Transformation width="100" crop="scale" />
+              </Image>
+            ) : null}
           </CardMedia>
           <CardContent>
             <Typography gutterBottom variant="h5" component="h2">
@@ -81,6 +83,12 @@ export default function Wallet() {
       ) : (
         <button onClick={handleRefill}>Refill</button>
       )}
+      {wallets.map((total, index) => {
+        <div>
+          <h3>{total.total}</h3>
+          <p>{total.username}</p>
+        </div>;
+      })}
     </>
   );
 }
