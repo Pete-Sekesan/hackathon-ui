@@ -1,8 +1,28 @@
-import React, { Component, Fragment, useState, useContext } from "react";
+import React, {
+  Component,
+  Fragment,
+  useState,
+  useContext,
+  useEffect,
+} from "react";
 import Wallet from "../Wallet/Wallet";
 import LeaderBoard from "../LeaderBoard/LeaderBoard";
+import AppContext from "../../AppContext";
+import AuthAPIService from "../../services/auth-api-service";
 
 function Dashboard() {
+  const { setWallets, wallets } = useContext(AppContext);
+
+  useEffect(() => {
+    AuthAPIService.getWallets()
+      .then((res) => {
+        setWallets(...wallets, res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [setWallets]);
+
   return (
     <Fragment>
       <Wallet />
