@@ -42,16 +42,19 @@ export default function Navbar(props) {
         <Toolbar>
           <Typography variant="h6" className={classes.title}>
             <div className="nav-logo">
-            <Link to="/">
-              <img src={Logo} alt="logo"/>
+              <Link to="/">
+                <img src={Logo} alt="logo" />
               </Link>
-              </div>
+            </div>
           </Typography>
           <Button color="inherit" component={Link} to={"/login"}>
             Login
           </Button>
           <Button color="inherit" component={Link} to={"/signup"}>
             Signup
+          </Button>
+          <Button color="inherit" component={Link} to={"/cardtable"}>
+            Card Table
           </Button>
           <Button color="inherit" onClick={logout}>
             Logout

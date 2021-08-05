@@ -17,36 +17,35 @@ const useStyles = makeStyles({
   },
 });
 
-export default function Wallet() {
+export default function Wallet(props) {
   const { username, userUrl, wallets, setWallets, userId } = useContext(
     AppContext
   );
   const classes = useStyles();
 
-  useEffect(() => {
-    AuthAPIService.getWallets()
-      .then((res) => {
-        setWallets(...wallets, res);
+  const yourWallet = wallets.filter((wallet) => wallet.user_id === userId);
+
+  const buyIn = () => {
+    AuthAPIService.postWallet({
+      username: username,
+      total: 500,
+    })
+      .then((wallet) => {
+        console.log(wallet);
+        setWallets([...wallets, wallet]);
+        console.log(wallets);
       })
       .catch((err) => {
         console.log(err);
       });
-  }, [setWallets]);
-
-  const handleRefill = (e) => {
-    console.log(wallets);
-    console.log(wallets.filter((wallet) => wallet.username === username));
-    console.log(yourWallet);
   };
-
-  const yourWallet = wallets.filter((wallet) => wallet.username === username);
 
   return (
     <>
       <Card className={classes.root}>
         <CardActionArea>
           <CardMedia>
-            {userUrl !== null ? (
+            {userUrl === null ? null : (
               <Image
                 cloudName="hotialrup"
                 publicId={`${userUrl}`}
@@ -61,19 +60,24 @@ export default function Wallet() {
                 <Transformation radius="max" />
                 <Transformation width="100" crop="scale" />
               </Image>
-            ) : null}
+            )}
           </CardMedia>
           <CardContent>
             <Typography gutterBottom variant="h5" component="h2">
               {username}
             </Typography>
             <Typography gutterBottom variant="h5" component="h2">
-              {yourWallet.total}
+              {yourWallet.length > 0 ? (
+                yourWallet[0].total
+              ) : (
+                <p>click buy in to load your wallet</p>
+              )}
             </Typography>
           </CardContent>
         </CardActionArea>
       </Card>
-      <button onClick={handleRefill}>Check</button>
+
+      {yourWallet.length === 0 ? <button onClick={buyIn}>Buy in</button> : null}
     </>
   );
 }

@@ -69,13 +69,6 @@ export default function SignIn(props) {
           TokenService.saveUserURL(jwt.user_url);
           TokenService.saveUserName(jwt.username);
           TokenService.saveUserId(jwt.user_id);
-        });
-      })
-
-      .then(() => {
-        AuthAPIService.postWallet({
-          total: 500,
-        }).then((res) => {
           props.history.push("/dashboard");
         });
       })

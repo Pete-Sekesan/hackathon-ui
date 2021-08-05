@@ -11,12 +11,13 @@ import AppContext from "../../AppContext";
 import AuthAPIService from "../../services/auth-api-service";
 
 function Dashboard() {
-  const { setWallets, wallets } = useContext(AppContext);
+  const { setWallets, wallets, userId } = useContext(AppContext);
 
   useEffect(() => {
     AuthAPIService.getWallets()
-      .then((res) => {
-        setWallets(res);
+      .then((wallets) => {
+        console.log("get wallets");
+        setWallets(wallets);
       })
       .catch((err) => {
         console.log(err);
@@ -26,7 +27,6 @@ function Dashboard() {
   return (
     <Fragment>
       <Wallet />
-
       <LeaderBoard />
     </Fragment>
   );

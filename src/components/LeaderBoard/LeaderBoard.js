@@ -41,33 +41,6 @@ function LeaderBoard() {
                   <small>{wallet.total}</small>
                 </li>
               ))}
-            <li>
-              <img src={testImg} className="leader-avatar" />
-              <mark>Test 1</mark>
-              <small>948</small>
-            </li>
-            <li>
-              <img src={testImg} className="leader-avatar" />
-              <mark>Test 2</mark>
-              <small>750</small>
-            </li>
-            <li>
-              <img src={testImg} className="leader-avatar" />
-              <mark>Test 3</mark>
-              <small>684</small>
-            </li>
-
-            <li>
-              <img src={testImg} className="leader-avatar" />
-              <mark>Test 4</mark>
-              <small>684</small>
-            </li>
-
-            <li>
-              <img src={testImg} className="leader-avatar" />
-              <mark>Test 5</mark>
-              <small>684</small>
-            </li>
           </ol>
         </div>
       </div>
