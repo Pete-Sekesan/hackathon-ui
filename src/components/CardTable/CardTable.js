@@ -14,6 +14,8 @@ function CardTable(props) {
   const [placeBet, setPlaceBet] = useState(false);
   const [dealShow, setDealShow] = useState(false);
   const [revealShow, setRevealShow] = useState(false);
+  const [dealerScore, setDealerScore] = useState(0);
+  const [playerScore, setPlayerScore] = useState(0);
 
   const shuffleCards = () => {
     AuthAPIService.shuffleCards()
@@ -67,6 +69,55 @@ function CardTable(props) {
     setRevealShow(true);
   };
 
+  const setPlayerValue = () => {
+    const playerScore = playerCard;
+    if (playerScore.value === "JACK") {
+      setPlayerScore(11);
+    } else if (playerScore.value === "QUEEN") {
+      setPlayerScore(12);
+    } else if (playerScore.value === "KING") {
+      setPlayerScore(13);
+    } else if (playerScore.value === "ACE") {
+      setPlayerScore(14);
+    } else {
+      setPlayerScore(playerScore.value);
+    }
+    return playerScore;
+  };
+
+  const setDealerValue = () => {
+    const dealerScore = dealerCard;
+    if (dealerScore.value === "JACK") {
+      setDealerScore(11);
+    } else if (dealerScore.value === "QUEEN") {
+      setDealerScore(12);
+    } else if (dealerScore.value === "KING") {
+      setDealerScore(13);
+    } else if (dealerScore.value === "ACE") {
+      setDealerScore(14);
+    } else {
+      setDealerScore(dealerScore.value);
+    }
+  };
+
+  const setWinner = () => {
+    setPlayerValue();
+    setDealerValue();
+    if (dealerScore > playerScore) {
+      console.log("Dealer Wins");
+    } else if (playerScore > dealerScore) {
+      console.log("You Win!");
+    } else if (playerScore === dealerScore) {
+      console.log("time to go to war");
+    } else {
+      return;
+    }
+  };
+
+  const handleHand = () => {
+    dealCards();
+    setWinner();
+  };
   return (
     <div>
       {playerCard !== null ? (
@@ -93,7 +144,7 @@ function CardTable(props) {
         <button onClick={shuffleCards}>Deal Cards</button>
       ) : null}
       {revealShow === false ? null : (
-        <button onClick={dealCards}>Reveal Cards</button>
+        <button onClick={handleHand}>Reveal Cards</button>
       )}
       <br />
       {placeBet === false ? null : (
