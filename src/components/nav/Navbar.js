@@ -56,6 +56,9 @@ export default function Navbar(props) {
           <Button color="inherit" component={Link} to={"/cardtable"}>
             Card Table
           </Button>
+          <Button color="inherit" component={Link} to={"/dashboard"}>
+            Dashboard
+          </Button>
           <Button color="inherit" onClick={logout}>
             Logout
           </Button>
