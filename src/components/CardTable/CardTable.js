@@ -65,7 +65,7 @@ function CardTable(props) {
 
   useEffect(() => {
     setWinner();
-  }, [dealerCard, playerCard]);
+  }, [playerCard]);
 
   const betTen = () => {
     setBet(bet + 10);
