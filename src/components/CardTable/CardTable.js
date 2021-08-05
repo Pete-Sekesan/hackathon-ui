@@ -43,6 +43,7 @@ function CardTable(props) {
         setDealerCard(hand.cards[1]);
         setDealShow(false);
         setRevealShow(false);
+        setHand(true);
       })
       .catch((err) => {
         console.log(err);
@@ -52,20 +53,22 @@ function CardTable(props) {
   useEffect(() => {
     if (playerCard !== null) {
       setPlayerValue();
-      console.log("useEffect working");
+      console.log("useEffect player working");
     }
   }, [playerCard]);
 
   useEffect(() => {
     if (dealerCard !== null) {
       setDealerValue();
-      console.log("useEffect working");
+      console.log("useEffect dealer working");
     }
   }, [dealerCard]);
 
   useEffect(() => {
-    setWinner();
-  }, [playerCard]);
+    if (hand === true) {
+      setWinner();
+    }
+  }, [hand]);
 
   const betTen = () => {
     setBet(bet + 10);
@@ -87,56 +90,54 @@ function CardTable(props) {
   };
 
   const setPlayerValue = () => {
-    const playerScore = playerCard;
-    console.log(playerScore);
-    if (playerScore.value === "JACK") {
+    if (playerCard.value === "JACK") {
       setPlayerScore(11);
-    } else if (playerScore.value === "QUEEN") {
+    } else if (playerCard.value === "QUEEN") {
       setPlayerScore(12);
-    } else if (playerScore.value === "KING") {
+    } else if (playerCard.value === "KING") {
       setPlayerScore(13);
-    } else if (playerScore.value === "ACE") {
+    } else if (playerCard.value === "ACE") {
       setPlayerScore(14);
     } else {
-      setPlayerScore(playerScore.value);
+      setPlayerScore(playerCard.value);
     }
-    console.log("ran through");
-    console.log(playerScore);
-    return playerScore;
   };
 
   const setDealerValue = () => {
-    const dealerScore = dealerCard;
-    if (dealerScore.value === "JACK") {
+    if (dealerCard.value === "JACK") {
       setDealerScore(11);
-    } else if (dealerScore.value === "QUEEN") {
+    }
+    if (dealerCard.value === "QUEEN") {
       setDealerScore(12);
-    } else if (dealerScore.value === "KING") {
+    }
+    if (dealerCard.value === "KING") {
       setDealerScore(13);
-    } else if (dealerScore.value === "ACE") {
+    }
+    if (dealerCard.value === "ACE") {
       setDealerScore(14);
-    } else {
-      setDealerScore(dealerScore.value);
+    }
+    if (dealerCard.value > 0) {
+      setDealerScore(dealerCard.value);
     }
   };
 
   const setWinner = () => {
-    if (hand === true) {
-      if (dealerScore > playerScore) {
-        console.log("Dealer Wins");
-      } else if (playerScore > dealerScore) {
-        console.log("You Win!");
-      } else if (playerScore === dealerScore) {
-        console.log("time to go to war");
-      } else {
-        return;
-      }
+    if (dealerScore > playerScore) {
+      console.log("Dealer Wins");
+      alert("Dealer Wins");
+    } else if (playerScore > dealerScore) {
+      console.log("You Win!");
+      alert("You Win!");
+    } else if (playerScore === dealerScore) {
+      console.log("time to go to war");
+      alert("Time to go to war");
+    } else {
+      return;
     }
   };
 
   const handleHand = () => {
     dealCards();
-    setHand(true);
   };
   return (
     <div>
