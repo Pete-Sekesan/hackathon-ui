@@ -16,7 +16,7 @@ function Dashboard() {
   useEffect(() => {
     AuthAPIService.getWallets()
       .then((res) => {
-        setWallets(...wallets, res);
+        setWallets(res);
       })
       .catch((err) => {
         console.log(err);
