@@ -18,6 +18,8 @@ function CardTable(props) {
   const [hand, setHand] = useState(false);
 
   const shuffleCards = () => {
+    setPlayerScore(0);
+    setDealerScore(0);
     AuthAPIService.shuffleCards()
       .then((deck) => {
         console.log(deck.deck_id);
@@ -124,15 +126,12 @@ function CardTable(props) {
   const setWinner = () => {
     if (dealerScore > playerScore) {
       console.log("Dealer Wins");
-      alert("Dealer Wins");
-    } else if (playerScore > dealerScore) {
+    }
+    if (playerScore > dealerScore) {
       console.log("You Win!");
-      alert("You Win!");
-    } else if (playerScore === dealerScore) {
+    }
+    if (playerScore === dealerScore) {
       console.log("time to go to war");
-      alert("Time to go to war");
-    } else {
-      return;
     }
   };
 

@@ -71,13 +71,13 @@ const AuthAPIService = {
       if (!res.ok) return res.json().then((e) => Promise.reject(e));
     });
   },
-  editItem(item_id, item) {
-    return fetch(`${config.API_ENDPOINT}/api/items/${item_id}`, {
+  editWallet(wallet_id, wallet) {
+    return fetch(`${config.API_ENDPOINT}/api/wallets/${wallet_id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(item),
+      body: JSON.stringify(wallet),
     }).then((res) => {
       if (!res.ok) return res.json().then((e) => Promise.reject(e));
     });
