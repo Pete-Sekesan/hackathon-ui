@@ -87,6 +87,9 @@ function CardTable(props) {
   };
 
   const placeBets = () => {
+    AuthAPIService.editWallet({
+      total: bank - bet,
+    });
     setPlaceBet(false);
     setRevealShow(true);
   };
