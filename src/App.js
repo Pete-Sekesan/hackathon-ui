@@ -9,12 +9,12 @@ import AppContext from "./AppContext";
 import TokenService from "./services/token-service";
 import CardTable from "./components/CardTable/CardTable";
 
-
 function App() {
   const [userId, setUserId] = useState(TokenService.hasUserId());
   const [username, setUsername] = useState(TokenService.hasUserName());
   const [userUrl, setUserUrl] = useState(TokenService.hasUserURL());
   const [wallets, setWallets] = useState([]);
+  const [walletId, setWalletId] = useState("");
   const contextValue = {
     userId,
     setUserId,
@@ -24,6 +24,8 @@ function App() {
     setUserUrl,
     wallets,
     setWallets,
+    walletId,
+    setWalletId,
   };
 
   return (

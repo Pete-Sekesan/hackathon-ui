@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -28,12 +28,17 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Navbar(props) {
   const classes = useStyles();
+  const { setUserId, setUsername, setUserUrl } = useContext(AppContext);
 
   const logout = () => {
     TokenService.clearUserId();
     TokenService.clearUserName();
     TokenService.clearUserURL();
     TokenService.clearAuthToken();
+    setUserId(null);
+    setUsername(null);
+    setUserUrl(null);
+    props.history.push("/");
   };
 
   return (
@@ -47,21 +52,28 @@ export default function Navbar(props) {
               </Link>
             </div>
           </Typography>
-          <Button color="inherit" component={Link} to={"/login"}>
-            Login
-          </Button>
-          <Button color="inherit" component={Link} to={"/signup"}>
-            Signup
-          </Button>
-          <Button color="inherit" component={Link} to={"/cardtable"}>
-            Card Table
-          </Button>
-          <Button color="inherit" component={Link} to={"/dashboard"}>
-            Dashboard
-          </Button>
-          <Button color="inherit" onClick={logout}>
-            Logout
-          </Button>
+          {TokenService.hasAuthToken() ? (
+            <>
+              <Button color="inherit" component={Link} to={"/cardtable"}>
+                Card Table
+              </Button>
+              <Button color="inherit" component={Link} to={"/dashboard"}>
+                Dashboard
+              </Button>
+              <Button color="inherit" onClick={logout}>
+                Logout
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button color="inherit" component={Link} to={"/login"}>
+                Login
+              </Button>
+              <Button color="inherit" component={Link} to={"/signup"}>
+                Signup
+              </Button>
+            </>
+          )}
         </Toolbar>
       </AppBar>
     </div>
